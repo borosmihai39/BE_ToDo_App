@@ -1,4 +1,5 @@
 const Todos = require("../models/todoModel");
+const ContactMessages = require("../models/messageModel");
 const User = require("../models/User");
 const bodyParser = require("body-parser");
 let { isLoggedIn } = require("./authorizationMiddleware");
@@ -30,7 +31,7 @@ module.exports = function (app) {
   // Show To Dos only if user is logged in v2
   app.get("/api/v2/todos", isLoggedIn, (req, res) => {
     let username = req.query.username;
-    console.log(username);
+
     User.findOne({ username: req.query.username })
       .populate("todos")
       .then((result) => {
@@ -40,6 +41,26 @@ module.exports = function (app) {
         res.status(500).json({ error });
         console.log(error);
       });
+  });
+  // Post contact message
+  app.post("/api/contactmessage", (req, res) => {
+    const newMessage = ContactMessages({
+      message: req.body.message,
+      email: req.body.email,
+    }).save(function (err, result) {
+      if (err) throw err;
+
+      if (result) {
+        res.json(result);
+      }
+    });
+  });
+  // get messages
+  app.get("/api/contactmessage", (req, res) => {
+    ContactMessages.find((err, message) => {
+      if (err) throw err;
+      res.send(message);
+    });
   });
   // Update or post new To Do
   app.post("/api/todo", (req, res) => {
