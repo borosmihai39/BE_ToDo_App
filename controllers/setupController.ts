@@ -1,7 +1,18 @@
 let Todos = require("../models/todoModel");
 let { isLoggedIn } = require("./authorizationMiddleware");
-module.exports = function (app) {
-  app.get("/api/setupTodos", isLoggedIn, (req, res) => {
+import express, { Request, Response } from "express";
+interface Todo {
+  username: String;
+  todo: String;
+  isDone: Boolean;
+  hasAttachment: Boolean;
+}
+
+interface Todos {
+  todos: Todo[];
+}
+export default function (app: express.Application) {
+  app.get("/api/setupTodos", isLoggedIn, (req: Request, res: Response) => {
     let starterTodos = [
       {
         username: "test",
@@ -22,8 +33,8 @@ module.exports = function (app) {
         hasAttachment: false,
       },
     ];
-    Todos.create(starterTodos, (err, results) => {
+    Todos.create(starterTodos, (err: Error, results: Todos) => {
       res.send(results);
     });
   });
-};
+}

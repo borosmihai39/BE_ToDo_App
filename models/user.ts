@@ -8,4 +8,4 @@ const UserSchema = new Schema({
   todos: [{ type: Schema.Types.ObjectId, ref: "Todos" }],
 });
 
-module.exports = mongoose.model("User", UserSchema);
+export default mongoose.model("User", UserSchema);

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 let Schema = mongoose.Schema;
 // To Do schema
@@ -9,6 +9,4 @@ const todoSchema = new Schema({
   hasAttachment: Boolean,
 });
 
-let Todos = mongoose.model("Todos", todoSchema);
-
-module.exports = Todos;
+export let Todos = mongoose.model("Todos", todoSchema);

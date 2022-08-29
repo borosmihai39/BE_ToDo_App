@@ -1,8 +1,8 @@
 require("dotenv").config(); // loading env variables
 const jwt = require("jsonwebtoken");
-
+import express, { Request, Response, NextFunction } from "express";
 // MIDDLEWARE FOR AUTHORIZATION (MAKING SURE THEY ARE LOGGED IN)
-const isLoggedIn = async (req, res, next) => {
+const isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // check if auth header exists
     if (req.headers.authorization) {
@@ -12,7 +12,7 @@ const isLoggedIn = async (req, res, next) => {
         const payload = await jwt.verify(token, process.env.SECRET);
         if (payload) {
           // store user data in request object
-          req.user = payload;
+          req.body.user = payload;
           next();
         } else {
           res.status(400).json({ error: "token verification failed" });
